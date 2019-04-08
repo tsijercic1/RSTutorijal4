@@ -51,12 +51,25 @@ public class Artikal {
 
     @Override
     public boolean equals(Object o) {
-        Artikal a = (Artikal) o;
         if (this == o) return true;
-        if(!naziv.equals(a.getNaziv()))return false;
-        if(!sifra.equals(a.getSifra())) return false;
-        if(Double.compare(cijena,a.getCijena())!=0) return false;
-        return true;
+        if (!(o instanceof Artikal)) return false;
+
+        Artikal artikal = (Artikal) o;
+
+        if (Double.compare(artikal.getCijena(), getCijena()) != 0) return false;
+        if (getSifra() != null ? !getSifra().equals(artikal.getSifra()) : artikal.getSifra() != null) return false;
+        return getNaziv() != null ? getNaziv().equals(artikal.getNaziv()) : artikal.getNaziv() == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result;
+        long temp;
+        result = getSifra() != null ? getSifra().hashCode() : 0;
+        result = 31 * result + (getNaziv() != null ? getNaziv().hashCode() : 0);
+        temp = Double.doubleToLongBits(getCijena());
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        return result;
     }
 
     public static ArrayList<Artikal> izbaciDuplikate(ArrayList<Artikal> artikli){
